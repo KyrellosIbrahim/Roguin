@@ -161,6 +161,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5951c1997eb2a40a483aca3611d62e99, type: 2}
   - {fileID: 11400000, guid: fe904744c1c53418b8d773d75b909c3a, type: 2}
   - {fileID: 0}
+  exitTile: {fileID: 0}
 --- !u!156049354 &505374088
 Grid:
   m_ObjectHideFlags: 0
