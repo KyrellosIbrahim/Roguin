@@ -5,10 +5,21 @@ public class BoardManager : MonoBehaviour
 {
     public int width, height;
     public Tile[] tiles;
+    public Tile exitTile;
     private Tilemap board;
 
     void Start()
     {
+        GenerateTileMap();
+        PlaceExitTile();
+    }
+
+    void Update()
+    {
+        
+    }
+
+    public void GenerateTileMap() {
         board = GetComponentInChildren<Tilemap>();
         for (int i = -4; i <= 3; i++) { //x
             for (int j = -4; j <= 3; j++) { //y
@@ -19,12 +30,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        
-    }
-
-    public void SetTile() {
-
+    public void PlaceExitTile() {
+        board.SetTile(new Vector3Int(3, 3, 0), exitTile);
     }
 }
