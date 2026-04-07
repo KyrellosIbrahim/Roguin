@@ -152,15 +152,14 @@ MonoBehaviour:
   width: 10
   height: 10
   tiles:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: b73bcfbe27189441dbd5504a04a39ee0, type: 2}
+  - {fileID: 11400000, guid: 9bea4100b891f470994ee42a78b3713f, type: 2}
+  - {fileID: 11400000, guid: b56fdd99e41634f0795ffb7fddc14d2d, type: 2}
+  - {fileID: 11400000, guid: 8a6917a9cede642f9a3ee7cd59327d16, type: 2}
+  - {fileID: 11400000, guid: b98c733ee6a1b4466b7d97b83a2e4f8f, type: 2}
+  - {fileID: 11400000, guid: 172838ec0c9714298a25c9091ce0cf57, type: 2}
+  - {fileID: 11400000, guid: 5951c1997eb2a40a483aca3611d62e99, type: 2}
+  - {fileID: 11400000, guid: fe904744c1c53418b8d773d75b909c3a, type: 2}
   - {fileID: 0}
 --- !u!156049354 &505374088
 Grid:
