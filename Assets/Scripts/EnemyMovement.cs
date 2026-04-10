@@ -55,7 +55,7 @@ public class EnemyMovement : MonoBehaviour
 
         Vector3Int tryPos = gridPos + dir;
 
-        // 💀 If enemy reaches player
+        //  If enemy reaches player
         if (tryPos == playerCell)
         {
             if (catchSound != null && audioSource != null)
