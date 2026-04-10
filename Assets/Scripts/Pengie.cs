@@ -28,7 +28,7 @@ public class Pengie : MonoBehaviour
         gridPos = tilemap.WorldToCell(transform.position);
         transform.position = tilemap.GetCellCenterWorld(gridPos);
 
-        GetComponent<SpriteRenderer>().sortingOrder = 10;
+        GetComponent<SpriteRenderer>().sortingOrder = 5;
     }
 
     void Update()
