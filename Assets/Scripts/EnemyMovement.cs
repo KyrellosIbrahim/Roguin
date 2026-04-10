@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -7,9 +8,10 @@ public class EnemyMovement : MonoBehaviour
     public Transform player;
     public TileBase rockTile;
 
-    private Vector3Int gridPos;
-
     public float moveTime = 0.2f;
+    public int detectionRange = 3;
+
+    private Vector3Int gridPos;
     private bool isMoving = false;
 
     void Start()
@@ -20,11 +22,19 @@ public class EnemyMovement : MonoBehaviour
 
     public void MoveTowardPlayer()
     {
-        if (!isMoving)
+        if (isMoving)
+            return;
+
+        Vector3Int playerCell = tilemap.WorldToCell(player.position);
+        int distance = Mathf.Abs(playerCell.x - gridPos.x) + Mathf.Abs(playerCell.y - gridPos.y);
+
+        if (distance <= detectionRange)
+        {
             StartCoroutine(Move());
+        }
     }
 
-    System.Collections.IEnumerator Move()
+    IEnumerator Move()
     {
         isMoving = true;
 
@@ -33,20 +43,32 @@ public class EnemyMovement : MonoBehaviour
 
         Vector3Int dir;
 
-        // choose main direction toward player
         if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
             dir = new Vector3Int((int)Mathf.Sign(diff.x), 0, 0);
         else
             dir = new Vector3Int(0, (int)Mathf.Sign(diff.y), 0);
 
-        // try main move
         Vector3Int tryPos = gridPos + dir;
 
-        // if blocked, try alternatives
+        // If enemy would move onto player, trigger game over
+        if (tryPos == playerCell)
+        {
+            GameManager.Instance.GameOver();
+            isMoving = false;
+            yield break;
+        }
+
         if (!IsWalkable(tryPos))
         {
             Vector3Int alt1 = new Vector3Int(dir.y, dir.x, 0);
             Vector3Int alt2 = new Vector3Int(-dir.y, -dir.x, 0);
+
+            if (gridPos + alt1 == playerCell || gridPos + alt2 == playerCell)
+            {
+                GameManager.Instance.GameOver();
+                isMoving = false;
+                yield break;
+            }
 
             if (IsWalkable(gridPos + alt1))
                 tryPos = gridPos + alt1;
@@ -63,7 +85,6 @@ public class EnemyMovement : MonoBehaviour
         Vector3 end = tilemap.GetCellCenterWorld(tryPos);
 
         float t = 0f;
-
         while (t < moveTime)
         {
             transform.position = Vector3.Lerp(start, end, t / moveTime);
