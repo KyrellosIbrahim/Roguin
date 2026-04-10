@@ -11,13 +11,18 @@ public class EnemyMovement : MonoBehaviour
     public float moveTime = 0.2f;
     public int detectionRange = 3;
 
+    public AudioClip[] moveSounds;
+    public AudioClip catchSound;
+
     private Vector3Int gridPos;
     private bool isMoving = false;
+    private AudioSource audioSource;
 
     void Start()
     {
         gridPos = tilemap.WorldToCell(transform.position);
         transform.position = tilemap.GetCellCenterWorld(gridPos);
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void MoveTowardPlayer()
@@ -50,14 +55,18 @@ public class EnemyMovement : MonoBehaviour
 
         Vector3Int tryPos = gridPos + dir;
 
-        // If enemy would move onto player, trigger game over
+        // 💀 If enemy reaches player
         if (tryPos == playerCell)
         {
+            if (catchSound != null && audioSource != null)
+                audioSource.PlayOneShot(catchSound);
+
             GameManager.Instance.GameOver();
             isMoving = false;
             yield break;
         }
 
+        // obstacle handling
         if (!IsWalkable(tryPos))
         {
             Vector3Int alt1 = new Vector3Int(dir.y, dir.x, 0);
@@ -65,6 +74,9 @@ public class EnemyMovement : MonoBehaviour
 
             if (gridPos + alt1 == playerCell || gridPos + alt2 == playerCell)
             {
+                if (catchSound != null && audioSource != null)
+                    audioSource.PlayOneShot(catchSound);
+
                 GameManager.Instance.GameOver();
                 isMoving = false;
                 yield break;
@@ -83,6 +95,14 @@ public class EnemyMovement : MonoBehaviour
 
         Vector3 start = transform.position;
         Vector3 end = tilemap.GetCellCenterWorld(tryPos);
+
+        //  Play random enemy step sound
+        if (moveSounds.Length > 0 && audioSource != null)
+        {
+            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            int index = Random.Range(0, moveSounds.Length);
+            audioSource.PlayOneShot(moveSounds[index]);
+        }
 
         float t = 0f;
         while (t < moveTime)

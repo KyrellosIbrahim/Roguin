@@ -14,13 +14,20 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        gridPos = tilemap.WorldToCell(transform.position);
-        transform.position = tilemap.GetCellCenterWorld(gridPos);
+        if (tilemap != null)
+        {
+            gridPos = tilemap.WorldToCell(transform.position);
+            transform.position = tilemap.GetCellCenterWorld(gridPos);
+        }
+
         audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
+        if (turnManager == null || tilemap == null)
+            return;
+
         if (!turnManager.IsPlayerTurn())
             return;
 
@@ -50,20 +57,23 @@ public class PlayerMovement : MonoBehaviour
             gridPos = newPos;
             transform.position = tilemap.GetCellCenterWorld(gridPos);
 
-            // 🔊 Play random footstep
-            if (moveSounds.Length > 0 && audioSource != null)
+            if (moveSounds != null && moveSounds.Length > 0 && audioSource != null)
             {
                 audioSource.pitch = Random.Range(0.9f, 1.1f);
                 int index = Random.Range(0, moveSounds.Length);
                 audioSource.PlayOneShot(moveSounds[index]);
             }
 
-            turnManager.EndPlayerTurn();
+            if (turnManager != null)
+                turnManager.EndPlayerTurn();
         }
     }
 
     bool IsWalkable(Vector3Int pos)
     {
+        if (tilemap == null)
+            return false;
+
         TileBase tile = tilemap.GetTile(pos);
         return tile != rockTile;
     }
