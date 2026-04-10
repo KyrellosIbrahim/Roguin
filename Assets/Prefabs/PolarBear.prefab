@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5709685194488316365}
   - component: {fileID: 3327265836714874695}
+  - component: {fileID: -6592130880343123686}
   m_Layer: 0
   m_Name: PolarBear
   m_TagString: Untagged
@@ -91,3 +92,18 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &-6592130880343123686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8747812452799894086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4a9c3c029e3f4a7685a72bf4c1c0e08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
+  tilemap: {fileID: 0}
+  player: {fileID: 0}
+  moveTime: 0.2

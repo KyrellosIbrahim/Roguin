@@ -10,9 +10,13 @@ public class Pengie : MonoBehaviour
     public Tilemap tilemap;
     public TileBase rockTile;
 
+    // enemies
+    public EnemyMovement polarBear;
+    public EnemyMovement seal;
+
     private Vector3Int gridPos;
 
-    // world bounds (your exact requirement)
+    // world bounds (exact requirement)
     private Vector2 minWorld = new Vector2(-3.5f, -3.5f);
     private Vector2 maxWorld = new Vector2(3.5f, 3.5f);
 
@@ -52,7 +56,6 @@ public class Pengie : MonoBehaviour
         isMoving = true;
 
         Vector3Int newPos = gridPos + dir;
-
         Vector3 worldPos = tilemap.GetCellCenterWorld(newPos);
 
         // WORLD BOUNDARY CHECK
@@ -86,6 +89,14 @@ public class Pengie : MonoBehaviour
         transform.position = end;
         gridPos = newPos;
 
+        // movement finished
         isMoving = false;
+
+        // trigger enemies AFTER penguin moves
+        if (polarBear != null)
+            polarBear.MoveTowardPlayer();
+
+        if (seal != null)
+            seal.MoveTowardPlayer();
     }
 }
