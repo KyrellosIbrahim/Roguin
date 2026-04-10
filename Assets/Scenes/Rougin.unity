@@ -954,6 +954,10 @@ PrefabInstance:
       propertyPath: tilemap
       value: 
       objectReference: {fileID: 1360140263}
+    - target: {fileID: -6592130880343123686, guid: 4bfd427c23b9c4c04978c95ad03db6ad, type: 3}
+      propertyPath: rockTile
+      value: 
+      objectReference: {fileID: 11400000, guid: fe904744c1c53418b8d773d75b909c3a, type: 2}
     - target: {fileID: 3327265836714874695, guid: 4bfd427c23b9c4c04978c95ad03db6ad, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -1847,6 +1851,10 @@ PrefabInstance:
       propertyPath: tilemap
       value: 
       objectReference: {fileID: 1360140263}
+    - target: {fileID: -3976757922787602604, guid: baf4545a61aa441aca85e04235cd51d5, type: 3}
+      propertyPath: rockTile
+      value: 
+      objectReference: {fileID: 11400000, guid: fe904744c1c53418b8d773d75b909c3a, type: 2}
     - target: {fileID: 6255752114867593318, guid: baf4545a61aa441aca85e04235cd51d5, type: 3}
       propertyPath: m_Name
       value: Leapord
