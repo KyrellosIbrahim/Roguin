@@ -61,7 +61,7 @@ public class EnemyMovement : MonoBehaviour
             if (catchSound != null && audioSource != null)
                 audioSource.PlayOneShot(catchSound);
 
-            player.GetComponent<Pengie>().healthBar -= 1;
+            player.GetComponent<Pengie>().currentHealth -= 1;
         }
 
         // obstacle handling

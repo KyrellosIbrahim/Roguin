@@ -12,7 +12,11 @@ public class Pengie : MonoBehaviour
 
     // UI / score
     public MoveCounter moveCounter;
-    public int healthBar;
+    public int maxHealth;
+    public int currentHealth;
+    public GameObject[] hearts;
+    public GameObject heartPrefab;
+    public GameObject noHeartPrefab;
 
     // enemies
     public EnemyMovement polarBear;
@@ -34,13 +38,32 @@ public class Pengie : MonoBehaviour
 
         GetComponent<SpriteRenderer>().sortingOrder = 5;
 
-        healthBar = 3;
+        maxHealth = 3;
+        currentHealth = maxHealth;
+        hearts = new GameObject[currentHealth];
+        for (int heart = 0; heart < currentHealth; heart++)
+        {
+            Vector3 heartPosition = new Vector3(-6 + (.5f * heart), 3.5f, 5);
+            GameObject heartObject = Instantiate(heartPrefab, heartPosition, Quaternion.identity);
+            hearts[heart] = heartObject;
+        }
     }
 
     void Update()
     {
+        int heartSlot = 0;
+        for (int index = heartSlot; index < currentHealth; index++)
+        {
+            hearts[index] = Instantiate(heartPrefab, new Vector3(-6 + (.5f * heartSlot), 3.5f, 5), Quaternion.identity);
+            heartSlot++;
+        }
+        for (int index = heartSlot; index < maxHealth; index++)
+        {
+            hearts[index] = Instantiate(noHeartPrefab, new Vector3(-6 + (.5f * heartSlot), 3.5f, 5), Quaternion.identity);
+        }
+
         //game over
-        if (healthBar <= 0)
+        if (currentHealth <= 0)
         {
             GameManager.Instance.GameOver();
             isMoving = false;
