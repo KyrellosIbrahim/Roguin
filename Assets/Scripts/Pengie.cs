@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Pengie : MonoBehaviour
 {
@@ -9,13 +10,13 @@ public class Pengie : MonoBehaviour
     {
         if (isMoving) return;
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
             StartCoroutine(Move(Vector3.up));
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Keyboard.current.downArrowKey.wasPressedThisFrame)
             StartCoroutine(Move(Vector3.down));
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
             StartCoroutine(Move(Vector3.left));
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
             StartCoroutine(Move(Vector3.right));
     }
 
