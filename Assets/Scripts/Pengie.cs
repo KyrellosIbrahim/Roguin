@@ -9,6 +9,7 @@ public class Pengie : MonoBehaviour
 
     public Tilemap tilemap;
     public TileBase rockTile;
+    public TileBase stairTile;
 
     // UI / score
     public MoveCounter moveCounter;
@@ -123,6 +124,13 @@ public class Pengie : MonoBehaviour
             transform.position = Vector3.Lerp(start, end, t / moveTime);
             t += Time.deltaTime;
             yield return null;
+        }
+
+        //Stairs reached
+        if (targetTile == stairTile)
+        {
+            GameManager.Instance.LoadNextLevel();
+            isMoving = false;
         }
 
         transform.position = end;

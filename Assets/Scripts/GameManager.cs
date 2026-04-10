@@ -26,4 +26,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(gameOverSceneName);
     }
+
+    public void LoadNextLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Victory");
+    }
 }
