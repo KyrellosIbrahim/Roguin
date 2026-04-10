@@ -5,6 +5,13 @@ public class Pengie : MonoBehaviour
 {
     public float moveTime = 0.2f;
     private bool isMoving = false;
+    void Start()
+    {
+    transform.position = new Vector3(
+        Mathf.Round(transform.position.x),
+        Mathf.Round(transform.position.y),
+        -1);
+    }
 
     void Update()
     {
