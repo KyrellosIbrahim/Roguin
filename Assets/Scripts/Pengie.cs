@@ -54,11 +54,13 @@ public class Pengie : MonoBehaviour
         int heartSlot = 0;
         for (int index = heartSlot; index < currentHealth; index++)
         {
+            Destroy(hearts[index]);
             hearts[index] = Instantiate(heartPrefab, new Vector3(-6 + (.5f * heartSlot), 3.5f, 5), Quaternion.identity);
             heartSlot++;
         }
         for (int index = heartSlot; index < maxHealth; index++)
         {
+            Destroy(hearts[index]);
             hearts[index] = Instantiate(noHeartPrefab, new Vector3(-6 + (.5f * heartSlot), 3.5f, 5), Quaternion.identity);
         }
 
