@@ -1,19 +1,29 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public class Pengie : MonoBehaviour
 {
     public float moveTime = 0.2f;
-    public float stepSize = 1f;
-
     private bool isMoving = false;
 
-    private Vector2 minBounds = new Vector2(-3.5f, -3.5f);
-    private Vector2 maxBounds = new Vector2(3.5f, 3.5f);
+    public Tilemap tilemap;
+    public TileBase rockTile;
+
+    private Vector3Int gridPos;
+
+    // world bounds (your exact requirement)
+    private Vector2 minWorld = new Vector2(-3.5f, -3.5f);
+    private Vector2 maxWorld = new Vector2(3.5f, 3.5f);
 
     void Start()
     {
+        // FORCE START POSITION
         transform.position = new Vector3(-3.5f, -3.5f, -1);
+
+        gridPos = tilemap.WorldToCell(transform.position);
+        transform.position = tilemap.GetCellCenterWorld(gridPos);
+
         GetComponent<SpriteRenderer>().sortingOrder = 10;
     }
 
@@ -22,34 +32,47 @@ public class Pengie : MonoBehaviour
         if (isMoving || Keyboard.current == null)
             return;
 
-        Vector3 direction = Vector3.zero;
+        Vector3Int dir = Vector3Int.zero;
 
         if (Keyboard.current.upArrowKey.wasPressedThisFrame)
-            direction = Vector3.up;
+            dir = Vector3Int.up;
         else if (Keyboard.current.downArrowKey.wasPressedThisFrame)
-            direction = Vector3.down;
+            dir = Vector3Int.down;
         else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
-            direction = Vector3.left;
+            dir = Vector3Int.left;
         else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
-            direction = Vector3.right;
+            dir = Vector3Int.right;
 
-        if (direction != Vector3.zero)
-            StartCoroutine(Move(direction));
+        if (dir != Vector3Int.zero)
+            StartCoroutine(Move(dir));
     }
 
-    System.Collections.IEnumerator Move(Vector3 direction)
+    System.Collections.IEnumerator Move(Vector3Int dir)
     {
         isMoving = true;
 
-        Vector3 start = transform.position;
-        Vector3 end = start + (direction * stepSize);
+        Vector3Int newPos = gridPos + dir;
 
-        if (end.x < minBounds.x || end.x > maxBounds.x ||
-            end.y < minBounds.y || end.y > maxBounds.y)
+        Vector3 worldPos = tilemap.GetCellCenterWorld(newPos);
+
+        // WORLD BOUNDARY CHECK
+        if (worldPos.x < minWorld.x || worldPos.x > maxWorld.x ||
+            worldPos.y < minWorld.y || worldPos.y > maxWorld.y)
         {
             isMoving = false;
             yield break;
         }
+
+        // TILE CHECK (rock)
+        TileBase targetTile = tilemap.GetTile(newPos);
+        if (targetTile == rockTile)
+        {
+            isMoving = false;
+            yield break;
+        }
+
+        Vector3 start = transform.position;
+        Vector3 end = worldPos;
 
         float t = 0f;
 
@@ -61,6 +84,8 @@ public class Pengie : MonoBehaviour
         }
 
         transform.position = end;
+        gridPos = newPos;
+
         isMoving = false;
     }
 }
