@@ -317,7 +317,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 3538862215664055388, guid: 7479a4e2ffd4943c2a13e60341dff0d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -338,7 +338,7 @@ Transform:
   m_GameObject: {fileID: 191187919}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.48, y: -1.49, z: -1}
+  m_LocalPosition: {x: -3.59, y: -2.4, z: -1}
   m_LocalScale: {x: 2.7621891, y: 2.5304444, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -356,6 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24507e7d0ba3249189521ea8624bbb58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pengie
+  tilemap: {fileID: 1360140263}
   moveTime: 0.2
 --- !u!1 &233900049
 GameObject:
@@ -673,7 +674,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5951c1997eb2a40a483aca3611d62e99, type: 2}
   - {fileID: 11400000, guid: fe904744c1c53418b8d773d75b909c3a, type: 2}
   - {fileID: 0}
-  exitTile: {fileID: 0}
+  exitTile: {fileID: 11400000, guid: e7de5222dc02e40b1b0554ce768766f2, type: 2}
 --- !u!156049354 &505374088
 Grid:
   m_ObjectHideFlags: 0
@@ -1287,6 +1288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24507e7d0ba3249189521ea8624bbb58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pengie
+  tilemap: {fileID: 0}
   moveTime: 0.2
 --- !u!1 &1655462106
 GameObject:
