@@ -10,6 +10,9 @@ public class Pengie : MonoBehaviour
     public Tilemap tilemap;
     public TileBase rockTile;
 
+    // UI / score
+    public MoveCounter moveCounter;
+
     // enemies
     public EnemyMovement polarBear;
     public EnemyMovement seal;
@@ -89,7 +92,10 @@ public class Pengie : MonoBehaviour
         transform.position = end;
         gridPos = newPos;
 
-        // movement finished
+        //ADD MOVE COUNT HERE
+        if (moveCounter != null)
+            moveCounter.AddMove();
+
         isMoving = false;
 
         // trigger enemies AFTER penguin moves
