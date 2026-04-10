@@ -10,7 +10,7 @@ public class MusicManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // THIS is the key
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
