@@ -12,6 +12,7 @@ public class Pengie : MonoBehaviour
 
     // UI / score
     public MoveCounter moveCounter;
+    public int healthBar;
 
     // enemies
     public EnemyMovement polarBear;
@@ -32,13 +33,23 @@ public class Pengie : MonoBehaviour
         transform.position = tilemap.GetCellCenterWorld(gridPos);
 
         GetComponent<SpriteRenderer>().sortingOrder = 5;
+
+        healthBar = 3;
     }
 
     void Update()
     {
+        //game over
+        if (healthBar <= 0)
+        {
+            GameManager.Instance.GameOver();
+            isMoving = false;
+        }
+
         if (isMoving || Keyboard.current == null)
             return;
 
+        //player movement
         Vector3Int dir = Vector3Int.zero;
 
         if (Keyboard.current.upArrowKey.wasPressedThisFrame)
