@@ -515,6 +515,7 @@ MonoBehaviour:
   moveTime: 0.2
   tilemap: {fileID: 1360140263}
   rockTile: {fileID: 11400000, guid: fe904744c1c53418b8d773d75b909c3a, type: 2}
+  wallTile: {fileID: 11400000, guid: edce1dfbf05454402a0ff976ebf91882, type: 2}
   stairTile: {fileID: 11400000, guid: e7de5222dc02e40b1b0554ce768766f2, type: 2}
   moveCounter: {fileID: 44493993}
   maxHealth: 0
@@ -1001,6 +1002,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5951c1997eb2a40a483aca3611d62e99, type: 2}
   - {fileID: 11400000, guid: fe904744c1c53418b8d773d75b909c3a, type: 2}
   exitTile: {fileID: 11400000, guid: e7de5222dc02e40b1b0554ce768766f2, type: 2}
+  startTile: {fileID: 11400000, guid: b73bcfbe27189441dbd5504a04a39ee0, type: 2}
+  wallTile: {fileID: 11400000, guid: edce1dfbf05454402a0ff976ebf91882, type: 2}
 --- !u!156049354 &505374088
 Grid:
   m_ObjectHideFlags: 0

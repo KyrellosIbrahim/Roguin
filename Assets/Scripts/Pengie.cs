@@ -9,6 +9,7 @@ public class Pengie : MonoBehaviour
 
     public Tilemap tilemap;
     public TileBase rockTile;
+    public TileBase wallTile;
     public TileBase stairTile;
 
     // UI / score
@@ -25,10 +26,6 @@ public class Pengie : MonoBehaviour
 
     private Vector3Int gridPos;
 
-    // world bounds (exact requirement)
-    private Vector2 minWorld = new Vector2(-3.5f, -3.5f);
-    private Vector2 maxWorld = new Vector2(3.5f, 3.5f);
-
     private Vector3 startPosition = new Vector3(-3.5f, -3.5f, -1);
 
     void Start()
@@ -42,23 +39,31 @@ public class Pengie : MonoBehaviour
 
         maxHealth = 3;
         currentHealth = maxHealth;
-        hearts = new GameObject[currentHealth];
-        for (int heart = 0; heart < currentHealth; heart++)
+        hearts = new GameObject[maxHealth];
+        for (int heart = 0; heart < maxHealth; heart++)
         {
             Vector3 heartPosition = new Vector3(-6 + (.5f * heart), 3.5f, 5);
-            GameObject heartObject = Instantiate(heartPrefab, heartPosition, Quaternion.identity);
-            hearts[heart] = heartObject;
+            hearts[heart] = Instantiate(heartPrefab, heartPosition, Quaternion.identity);
         }
     }
 
     public void ResetPlayer()
     {
-        // Snap back to bottom-left start
         transform.position = startPosition;
         gridPos = tilemap.WorldToCell(transform.position);
         transform.position = tilemap.GetCellCenterWorld(gridPos);
-
         isMoving = false;
+    }
+
+    bool CanMove(Vector3Int dir)
+    {
+        Vector3Int newPos = gridPos + dir;
+        TileBase targetTile = tilemap.GetTile(newPos);
+
+        if (targetTile == rockTile || targetTile == wallTile)
+            return false;
+
+        return true;
     }
 
     void Update()
@@ -74,9 +79,9 @@ public class Pengie : MonoBehaviour
         {
             Destroy(hearts[index]);
             hearts[index] = Instantiate(noHeartPrefab, new Vector3(-6 + (.5f * heartSlot), 3.5f, 5), Quaternion.identity);
+            heartSlot++;
         }
 
-        //game over
         if (currentHealth <= 0)
         {
             GameManager.Instance.GameOver();
@@ -86,7 +91,6 @@ public class Pengie : MonoBehaviour
         if (isMoving || Keyboard.current == null)
             return;
 
-        //player movement
         Vector3Int dir = Vector3Int.zero;
 
         if (Keyboard.current.upArrowKey.wasPressedThisFrame)
@@ -98,7 +102,7 @@ public class Pengie : MonoBehaviour
         else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
             dir = Vector3Int.right;
 
-        if (dir != Vector3Int.zero)
+        if (dir != Vector3Int.zero && CanMove(dir))
             StartCoroutine(Move(dir));
     }
 
@@ -108,28 +112,12 @@ public class Pengie : MonoBehaviour
 
         Vector3Int newPos = gridPos + dir;
         Vector3 worldPos = tilemap.GetCellCenterWorld(newPos);
-
-        // WORLD BOUNDARY CHECK
-        if (worldPos.x < minWorld.x || worldPos.x > maxWorld.x ||
-            worldPos.y < minWorld.y || worldPos.y > maxWorld.y)
-        {
-            isMoving = false;
-            yield break;
-        }
-
-        // TILE CHECK (rock)
         TileBase targetTile = tilemap.GetTile(newPos);
-        if (targetTile == rockTile)
-        {
-            isMoving = false;
-            yield break;
-        }
 
         Vector3 start = transform.position;
         Vector3 end = worldPos;
 
         float t = 0f;
-
         while (t < moveTime)
         {
             transform.position = Vector3.Lerp(start, end, t / moveTime);
@@ -140,11 +128,9 @@ public class Pengie : MonoBehaviour
         transform.position = end;
         gridPos = newPos;
 
-        //ADD MOVE COUNT HERE
         if (moveCounter != null)
             moveCounter.AddMove();
 
-        // Stairs reached — regenerate map, reset player
         if (targetTile == stairTile)
         {
             GameManager.Instance.NextLevel();
@@ -154,7 +140,6 @@ public class Pengie : MonoBehaviour
 
         isMoving = false;
 
-        // trigger enemies AFTER penguin moves
         if (polarBear != null)
             polarBear.MoveTowardPlayer();
 
