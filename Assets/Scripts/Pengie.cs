@@ -29,10 +29,11 @@ public class Pengie : MonoBehaviour
     private Vector2 minWorld = new Vector2(-3.5f, -3.5f);
     private Vector2 maxWorld = new Vector2(3.5f, 3.5f);
 
+    private Vector3 startPosition = new Vector3(-3.5f, -3.5f, -1);
+
     void Start()
     {
-        // FORCE START POSITION
-        transform.position = new Vector3(-3.5f, -3.5f, -1);
+        transform.position = startPosition;
 
         gridPos = tilemap.WorldToCell(transform.position);
         transform.position = tilemap.GetCellCenterWorld(gridPos);
@@ -48,6 +49,16 @@ public class Pengie : MonoBehaviour
             GameObject heartObject = Instantiate(heartPrefab, heartPosition, Quaternion.identity);
             hearts[heart] = heartObject;
         }
+    }
+
+    public void ResetPlayer()
+    {
+        // Snap back to bottom-left start
+        transform.position = startPosition;
+        gridPos = tilemap.WorldToCell(transform.position);
+        transform.position = tilemap.GetCellCenterWorld(gridPos);
+
+        isMoving = false;
     }
 
     void Update()
@@ -126,19 +137,20 @@ public class Pengie : MonoBehaviour
             yield return null;
         }
 
-        //Stairs reached
-        if (targetTile == stairTile)
-        {
-            GameManager.Instance.LoadNextLevel();
-            isMoving = false;
-        }
-
         transform.position = end;
         gridPos = newPos;
 
         //ADD MOVE COUNT HERE
         if (moveCounter != null)
             moveCounter.AddMove();
+
+        // Stairs reached — regenerate map, reset player
+        if (targetTile == stairTile)
+        {
+            GameManager.Instance.NextLevel();
+            isMoving = false;
+            yield break;
+        }
 
         isMoving = false;
 
