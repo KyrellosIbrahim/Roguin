@@ -11,6 +11,9 @@ public class EnemyMovement : MonoBehaviour
     public float moveTime = 0.2f;
     public int detectionRange = 3;
 
+    [Range(0f, 1f)]
+    public float optimalMoveChance = 0.60f;
+
     public AudioClip[] moveSounds;
     public AudioClip catchSound;
 
@@ -48,10 +51,23 @@ public class EnemyMovement : MonoBehaviour
 
         Vector3Int dir;
 
-        if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
-            dir = new Vector3Int((int)Mathf.Sign(diff.x), 0, 0);
+        if (Random.value <= optimalMoveChance)
+        {
+            // Optimal: move along dominant axis toward player
+            if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
+                dir = new Vector3Int((int)Mathf.Sign(diff.x), 0, 0);
+            else
+                dir = new Vector3Int(0, (int)Mathf.Sign(diff.y), 0);
+        }
         else
-            dir = new Vector3Int(0, (int)Mathf.Sign(diff.y), 0);
+        {
+            // Dumb: pick a random cardinal direction
+            Vector3Int[] cardinals = {
+                Vector3Int.right, Vector3Int.left,
+                Vector3Int.up, Vector3Int.down
+            };
+            dir = cardinals[Random.Range(0, cardinals.Length)];
+        }
 
         Vector3Int tryPos = gridPos + dir;
 
